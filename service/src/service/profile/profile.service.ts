@@ -14,7 +14,10 @@ export class ProfileService {
       projectId: process.env.GOOGLE_CLOUD_PROJECT_ID,
       credentials: {
         client_email: process.env.GOOGLE_CLOUD_STORAGE_CLIENT_EMAIL,
-        private_key: process.env.GOOGLE_CLOUD_STORAGE_PRIVATE_KEY,
+        private_key: Buffer.from(
+          process.env.GOOGLE_CLOUD_STORAGE_PRIVATE_KEY || '',
+          'base64',
+        ).toString('utf-8'),
       },
     });
   }
@@ -22,22 +25,17 @@ export class ProfileService {
   async getImage(
     type: 'user_profile_image',
     filename: string,
-  ): Promise<Buffer> {
+  ): Promise<{ url: string }> {
     const file = this.storage
       .bucket(this.bucketName)
       .file(`${type}/${filename}`);
     const [exists] = await file.exists();
     if (!exists) throw new NotFoundException(`Image not found: ${filename}`);
-    // return file.publicUrl();
-    const [contents] = await file.download();
-    return contents;
+    return { url: file.publicUrl() };
   }
 
   // [ GET ] profile/gallery/:userId
   async galleryByUserId(userId: string) {
-    // const taregtMedia = await this.prisma.userMedia.findMany({
-    //   where: { userProfileId: userId },
-    // });
     const context = this.storage.bucket(this.bucketName).file(``);
   }
 
