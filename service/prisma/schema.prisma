@@ -4,8 +4,9 @@
 // Get a free hosted Postgres database in seconds: `npx create-db`
 
 generator client {
-  provider = "prisma-client"
-  output   = "../src/generated/prisma"
+  provider     = "prisma-client"
+  output       = "../generated/prisma"
+  moduleFormat = "cjs"
 }
 
 datasource db {
@@ -13,7 +14,7 @@ datasource db {
 }
 
 model UserProfile {
-  id        Int      @id @default(autoincrement()) @map("id")
+  id        String   @id @default(uuid()) @map("id")
   name      String   @map("name")
   email     String   @unique @map("email")
   social    Json[]   @map("social")
@@ -30,7 +31,7 @@ model UserMedia {
   path          String   @map("path")
   type          String   @map("type")
   createdAt     DateTime @default(now()) @map("created_at")
-  userProfileId Int      @map("user_profile_id")
+  userProfileId String   @map("user_profile_id")
 
   userProfile UserProfile? @relation(fields: [userProfileId], references: [id])
 
