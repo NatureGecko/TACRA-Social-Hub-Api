@@ -27,4 +27,16 @@ export class ProfileController {
     res.setHeader('Content-Type', mimeTypes[ext] ?? 'application/octet-stream');
     res.send(buffer);
   }
+
+  // [ GET ] profile/gallery/:userId
+  @Get('gallery')
+  async galleryByUserId(@Param('userId') userId: string) {}
+
+  // [ GET ] profile/profile-image/:userId
+  @Get('profile-image')
+  async profileImageByUserId(@Param('userId') userId: string) {}
+
+  // [ GET ] profile/profile-image-list/:userId
+  @Get('profile-image-list')
+  async profileImageListByUserId(@Param('userId') userId: string) {}
 }
