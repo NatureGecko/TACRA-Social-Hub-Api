@@ -1,6 +1,6 @@
 -- CreateTable
 CREATE TABLE "user_profile" (
-    "id" SERIAL NOT NULL,
+    "id" TEXT NOT NULL,
     "name" TEXT NOT NULL,
     "email" TEXT NOT NULL,
     "social" JSONB[],
@@ -16,7 +16,7 @@ CREATE TABLE "user_media" (
     "path" TEXT NOT NULL,
     "type" TEXT NOT NULL,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "user_profile_id" INTEGER NOT NULL,
+    "user_profile_id" TEXT NOT NULL,
 
     CONSTRAINT "user_media_pkey" PRIMARY KEY ("id")
 );

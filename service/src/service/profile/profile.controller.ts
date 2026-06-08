@@ -1,6 +1,5 @@
-import type { Response } from 'express';
 import { ProfileService } from './profile.service';
-import { Controller, Get, Param, Res } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 
 @Controller('profile')
 export class ProfileController {
@@ -33,6 +32,12 @@ export class ProfileController {
   @Get('profile-image-list')
   async profileImageListByUserId(@Param('userId') userId: string) {
     return 'Hi';
+  }
+
+  // [ POST ] profile/update-social
+  @Post('update-social')
+  async updateSocial(@Body() body: any) {
+    throw new Error('not ready');
   }
 }
 
