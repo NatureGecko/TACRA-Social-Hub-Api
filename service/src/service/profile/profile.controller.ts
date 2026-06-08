@@ -1,7 +1,17 @@
+import { BaseInterceptor } from '../../interceptors/base.interceptor';
 import { ProfileService } from './profile.service';
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Post,
+  UseInterceptors,
+} from '@nestjs/common';
 
 @Controller('profile')
+@UseInterceptors(BaseInterceptor)
 export class ProfileController {
   constructor(private readonly service: ProfileService) {}
 
@@ -16,21 +26,30 @@ export class ProfileController {
     return response;
   }
 
-  // [ GET ] profile/gallery/:userId
+  // [ GET ] profile/gallery/:env/:userId
   @Get('gallery')
-  async galleryByUserId(@Param('userId') userId: string) {
+  async galleryByUserId(
+    @Param('env') env: string,
+    @Param('userId') userId: string,
+  ) {
     return 'Hi';
   }
 
-  // [ GET ] profile/profile-image/:userId
+  // [ GET ] profile/profile-image/:env/:userId
   @Get('profile-image')
-  async profileImageByUserId(@Param('userId') userId: string) {
+  async profileImageByUserId(
+    @Param('env') env: string,
+    @Param('userId') userId: string,
+  ) {
     return 'Hi';
   }
 
-  // [ GET ] profile/profile-image-list/:userId
+  // [ GET ] profile/profile-image-list/:env/:userId
   @Get('profile-image-list')
-  async profileImageListByUserId(@Param('userId') userId: string) {
+  async profileImageListByUserId(
+    @Param('env') env: string,
+    @Param('userId') userId: string,
+  ) {
     return 'Hi';
   }
 

@@ -15,8 +15,9 @@ datasource db {
 
 model UserProfile {
   id        String   @id @default(uuid()) @map("id")
+  site      String   @map("site") @db.VarChar()
   name      String   @map("name")
-  email     String   @unique @map("email")
+  email     String?  @unique @map("email")
   social    Json[]   @map("social")
   createdAt DateTime @default(now()) @map("created_at")
 

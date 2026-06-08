@@ -1,0 +1,37 @@
+@contentType = application/json
+@baseUrl = http://localhost:8080/tacra-api/v1
+
+### [ POST ] authen/generate-token
+# @name Login
+POST {{baseUrl}}/authen/generate-token
+Content-Type: {{contentType}}
+
+{
+    "userId": "8e528b55-01d8-4dd6-9581-9f5f72cbb60b",
+    "env": "dev"
+}
+
+###
+# Variable
+@authToken = {{Login.response.body.detail.accessToken}}
+
+# ### [ POST ] authen/login
+# GET {{baseUrl}}/tacra-api/v1/profile/image/8e528b55-01d8-4dd6-9581-9f5f72cbb60b.webp
+# Content-Type: {{contentType}}
+
+# ### [ GET ] profile/gallery/:userId
+# GET {{baseUrl}}/profile/gallery/
+# Content-Type: {{contentType}}
+
+# ### [ GET ] profile/profile-image/:userId
+# GET {{baseUrl}}/profile/profile-image/
+# Content-Type: {{contentType}}
+
+# ### [ GET ] profile/profile-image-list/:userId
+# GET {{baseUrl}}/profile/profile-image-list/
+# Content-Type: {{contentType}}
+
+# ### [ POST ] profile/update-social
+# POST {{baseUrl}}/profile/update-social
+# Content-Type: {{contentType}}
+ 
