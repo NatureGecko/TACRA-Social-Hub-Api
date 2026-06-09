@@ -14,12 +14,15 @@ datasource db {
 }
 
 model UserProfile {
-  id        String   @id @default(uuid()) @map("id")
-  site      String   @map("site") @db.VarChar()
-  name      String   @map("name")
-  email     String?  @unique @map("email")
-  social    Json[]   @map("social")
-  createdAt DateTime @default(now()) @map("created_at")
+  id           String   @id @default(uuid()) @map("id")
+  userName     String   @unique @map("user_name")
+  displayName  String   @map("display_name")
+  bio          String?  @map("bio")
+  email        String?  @unique @map("email")
+  social       Json[]   @map("social")
+  createdAt    DateTime @default(now()) @map("created_at")
+  imageProfile String?  @map("image_profile") @db.VarChar()
+  imageBanner  String?  @map("image_banner") @db.VarChar()
 
   userMedia UserMedia[]
 
@@ -38,3 +41,15 @@ model UserMedia {
 
   @@map("user_media")
 }
+
+// model Post {
+//   id            Int      @id @default(autoincrement()) @map("id")
+//   content       String   @map("content")
+//   createdAt     DateTime @default(now()) @map("created_at")
+//   userProfileId String   @map("user_profile_id")
+//   imageKeys     String[] @map("image_keys") @db.VarChar()
+
+//   userProfile UserProfile? @relation(fields: [userProfileId], references: [id])
+
+//   @@map("post")
+// }

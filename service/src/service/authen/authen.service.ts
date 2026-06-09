@@ -9,18 +9,18 @@ export class AuthenService {
 
   // [ POST ] authen/generate-token
   async generateToken(input: AuthenGenerateTokenRequestDto) {
-    let targetProfile = await this.prisma.userProfile.findFirst({
-      where: { site: input.env, id: input.userId },
-    });
-    if (!targetProfile) {
-      targetProfile = await this.prisma.userProfile.create({
-        data: {
-          id: input.userId,
-          site: input.env,
-          name: 'No name',
-        },
-      });
-    }
+    // let targetProfile = await this.prisma.userProfile.findFirst({
+    //   where: { site: input.env, id: input.userId },
+    // });
+    // if (!targetProfile) {
+    //   targetProfile = await this.prisma.userProfile.create({
+    //     data: {
+    //       id: input.userId,
+    //       site: input.env,
+    //       name: 'No name',
+    //     },
+    //   });
+    // }
 
     // if(!targetProfile){
     //   throw new

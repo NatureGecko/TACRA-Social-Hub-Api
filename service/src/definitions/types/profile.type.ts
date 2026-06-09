@@ -1,61 +1,51 @@
-export type TProfileUpdateSocialRequest = {
-  urlMainStream?: {
-    youtube?: string;
-    x?: string;
-    facebook?: string;
-    blueSky?: string;
-    instragrame?: string;
-  };
-  urlOther?: Record<string, string>;
-  bio?: string;
+import { JsonValue } from '@prisma/client/runtime/client';
+import { IsNotEmpty, IsOptional, IsString, MaxLength } from 'class-validator';
+
+// = --- = --- = --- = --- = --- = --- = --- =
+export type TProfileItem = {
+  bio: string | null;
+  id: string;
+  userName: string;
+  displayName: string;
+  email: string | null;
+  social: JsonValue[];
+  createdAt: Date;
+  imageProfile: string | null;
+  imageBanner: string | null;
 };
 
-import { Type } from 'class-transformer';
+// = --- = --- = --- = --- = --- = --- = --- =
+// [ GET ] profile/get/:user-id
+export type TProfilegetProfileByUserIdResponse = TProfileItem;
 
-import {
-  IsObject,
-  IsOptional,
-  IsString,
-  IsUrl,
-  MaxLength,
-  ValidateNested,
-} from 'class-validator';
+// = --- = --- = --- = --- = --- = --- = --- =
+// [ POST ] profile/update-image-profile
+export type TProfileUpdateProfileImageResponse = TProfileItem;
 
-// [ POST ] profile/update-social
-export class ProfileUpdateSocialDtoUrlMainStream {
-  @IsOptional()
-  @IsUrl()
-  youtube?: string;
+// = --- = --- = --- = --- = --- = --- = --- =
+// [ POST ] profile/update-image-banner
+export type TProfileUpdateBannerImageResponse = TProfileItem;
 
-  @IsOptional()
-  @IsUrl()
-  x?: string;
-
-  @IsOptional()
-  @IsUrl()
-  facebook?: string;
-
-  @IsOptional()
-  @IsUrl()
-  blueSky?: string;
-
-  @IsOptional()
-  @IsUrl()
-  instragrame?: string;
-}
-
-export class ProfileUpdateSocialDto {
-  @IsOptional()
-  @ValidateNested()
-  @Type(() => ProfileUpdateSocialDtoUrlMainStream)
-  urlMainStream?: ProfileUpdateSocialDtoUrlMainStream;
-
-  @IsOptional()
-  @IsObject()
-  urlOther?: Record<string, string>;
+// = --- = --- = --- = --- = --- = --- = --- =
+// [ POST ] profile/update-profile
+export class TProfileUpdateProfileRequest {
+  @IsNotEmpty()
+  @IsString()
+  userId!: string;
 
   @IsOptional()
   @IsString()
   @MaxLength(255)
   bio?: string;
+
+  @IsOptional()
+  @IsString()
+  @MaxLength(75)
+  displayName?: string;
+
+  @IsOptional()
+  @IsString()
+  @MaxLength(75)
+  userName?: string;
 }
+export type TProfileUpdateProfileResponse = TProfileItem;

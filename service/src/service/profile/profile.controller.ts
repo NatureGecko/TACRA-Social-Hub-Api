@@ -1,63 +1,40 @@
-import { BaseInterceptor } from '../../interceptors/base.interceptor';
 import { ProfileService } from './profile.service';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { BaseInterceptor } from '@/interceptors/base.interceptor';
+import { TProfileUpdateProfileRequest } from '@/definitions/types';
+import { GeneralExceptionFilter } from '@/exception/base.exception';
 
-import {
-  Body,
-  Controller,
-  Get,
-  Param,
-  Post,
-  UseInterceptors,
-} from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Query, UseFilters, UploadedFile, UseInterceptors } from '@nestjs/common';
 
 @Controller('profile')
 @UseInterceptors(BaseInterceptor)
+@UseFilters(GeneralExceptionFilter)
 export class ProfileController {
   constructor(private readonly service: ProfileService) {}
 
-  @Get('image/:filename')
-  async getImage(
-    @Param('filename') filename: string,
-  ): Promise<{ url: string }> {
-    const response = await this.service.getImage(
-      'user_profile_image',
-      filename,
-    );
-    return response;
+  // [ GET ] profile/get/:user-id
+  @Get('get/:userId')
+  async getProfileByUserId(@Param('userId') userId: string, @Query('displayName') displayName?: string) {
+    return this.service.getProfileByUserId(userId, displayName);
   }
 
-  // [ GET ] profile/gallery/:env/:userId
-  @Get('gallery')
-  async galleryByUserId(
-    @Param('env') env: string,
-    @Param('userId') userId: string,
-  ) {
-    return 'Hi';
+  // [ POST ] profile/update-image-profile
+  @Post('update-image-profile')
+  @UseInterceptors(FileInterceptor('file'))
+  async updateProfileImage(@Body('userId') userId: string, @UploadedFile() file: Express.Multer.File) {
+    return this.service.updateProfileImage(userId, file);
   }
 
-  // [ GET ] profile/profile-image/:env/:userId
-  @Get('profile-image')
-  async profileImageByUserId(
-    @Param('env') env: string,
-    @Param('userId') userId: string,
-  ) {
-    return 'Hi';
+  // [ POST ] profile/update-image-banner
+  @Post('update-image-banner')
+  @UseInterceptors(FileInterceptor('file'))
+  async updateBannerImage(@Body('userId') userId: string, @UploadedFile() file: Express.Multer.File) {
+    return this.service.updateBannerImage(userId, file);
   }
 
-  // [ GET ] profile/profile-image-list/:env/:userId
-  @Get('profile-image-list')
-  async profileImageListByUserId(
-    @Param('env') env: string,
-    @Param('userId') userId: string,
-  ) {
-    return 'Hi';
-  }
-
-  // [ POST ] profile/update-social
-  @Post('update-social')
-  async updateSocial(@Body() body: any) {
-    throw new Error('not ready');
+  // [ POST ] profile/update-profile
+  @Post('update-profile')
+  async updateProfile(@Body() body: TProfileUpdateProfileRequest) {
+    return this.service.updateProfile(body);
   }
 }
-
-// tacra-social-hub/user_profile_image/8e528b55-01d8-4dd6-9581-9f5f72cbb60b.webp

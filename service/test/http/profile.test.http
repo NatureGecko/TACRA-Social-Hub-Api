@@ -1,39 +1,19 @@
 @contentType = application/json
 @baseUrl = http://localhost:8080/tacra-api/v1
 
-### [ POST ] authen/generate-token
-# @name Login
-POST {{baseUrl}}/authen/generate-token
+### [ GET ] profile/get/:user-id
+# @name GetProfile
+GET {{baseUrl}}/profile/get/dev-8e528b55-01d8-4dd6-9581-9f5f72cbb60b?displayName=Kirin%20Anthia
+Content-Type: {{contentType}}
+
+### [ POST ] profile/update-profile
+# @name UpdateProfile
+POST {{baseUrl}}/profile/update-profile
 Content-Type: {{contentType}}
 
 {
-    "userId": "8e528b55-01d8-4dd6-9581-9f5f72cbb60b",
-    "env": "dev"
+  "userId": "dev-8e528b55-01d8-4dd6-9581-9f5f72cbb60b",
+  "displayName": "Kirin Anthia",
+  "userName": "kirin_anthia",
+  "bio": "Hello, I'm Kirin Anthia, a passionate software developer with a love for creating innovative solutions. I enjoy exploring new technologies and continuously improving my skills."
 }
-
-###
-
-###
-# Variable
-@authToken = {{Login.response.body.detail.accessToken}}
-
-### [ POST ] authen/login
-GET {{baseUrl}}/profile/image/8e528b55-01d8-4dd6-9581-9f5f72cbb60b.webp
-Content-Type: {{contentType}}
-
-### [ GET ] profile/gallery/:userId
-GET {{baseUrl}}/profile/gallery/
-Content-Type: {{contentType}}
-
-### [ GET ] profile/profile-image/:userId
-GET {{baseUrl}}/profile/profile-image/
-Content-Type: {{contentType}}
-
-### [ GET ] profile/profile-image-list/:userId
-GET {{baseUrl}}/profile/profile-image-list/
-Content-Type: {{contentType}}
-
-### [ POST ] profile/update-social
-POST {{baseUrl}}/profile/update-social
-Content-Type: {{contentType}}
- 

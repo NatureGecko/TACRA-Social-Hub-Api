@@ -1,10 +1,14 @@
 -- CreateTable
 CREATE TABLE "user_profile" (
     "id" TEXT NOT NULL,
-    "name" TEXT NOT NULL,
-    "email" TEXT NOT NULL,
+    "user_name" TEXT NOT NULL,
+    "display_name" TEXT NOT NULL,
+    "bio" TEXT,
+    "email" TEXT,
     "social" JSONB[],
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "image_profile" VARCHAR,
+    "image_banner" VARCHAR,
 
     CONSTRAINT "user_profile_pkey" PRIMARY KEY ("id")
 );
@@ -20,6 +24,9 @@ CREATE TABLE "user_media" (
 
     CONSTRAINT "user_media_pkey" PRIMARY KEY ("id")
 );
+
+-- CreateIndex
+CREATE UNIQUE INDEX "user_profile_user_name_key" ON "user_profile"("user_name");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "user_profile_email_key" ON "user_profile"("email");

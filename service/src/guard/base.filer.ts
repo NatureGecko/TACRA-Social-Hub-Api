@@ -11,13 +11,6 @@ export class JwtGuard implements CanActivate {
     const request = context.switchToHttp().getRequest<Request>();
     request.headers.timemark = new Date().getTime().toString();
     const authHeader = request.headers['authorization'];
-    const forwarded = request.headers['x-forwarded-for'];
-    const ip =
-      (Array.isArray(forwarded)
-        ? forwarded[0]
-        : forwarded?.split(',')[0]?.trim()) ||
-      request.ip ||
-      request.socket?.remoteAddress;
     if (!authHeader || !authHeader.startsWith('Bearer ')) {
       throw new GeneralError('AUTHENTICATION_FORBIDDEN');
     }
@@ -30,7 +23,6 @@ export class JwtGuard implements CanActivate {
       if (request.body && typeof request.body === 'object') {
         request.body.userId = payload.sub;
         request.body.username = payload.username;
-        if (ip) request.body.ip = String(ip).replace(/:/g, '');
       }
     } catch {
       throw new GeneralError('AUTHENTICATION_BLOCKED');
