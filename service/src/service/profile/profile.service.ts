@@ -1,5 +1,6 @@
 import { randomUUID } from 'crypto';
 import { Injectable } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { Prisma } from '../../../generated/prisma/client';
 import { GeneralError } from '@/exception/base.exception';
 import { PrismaService } from '@/modules/prisma/prisma.service';
@@ -17,12 +18,16 @@ import {
 export class ProfileService {
   private readonly storagePathImageProfile: string = 'image-profile';
   private readonly storagePathImageBanner: string = 'image-banner';
+  private readonly bucketName: string;
 
   constructor(
     private readonly prisma: PrismaService,
     private readonly mediaConversion: MediaConversionService,
     private readonly cloudflareR2: CloudflareR2Service,
-  ) {}
+    private readonly configService: ConfigService,
+  ) {
+    this.bucketName = this.configService.getOrThrow<string>('CLOUDFLARE_BUCKET_NAME');
+  }
 
   private profileSelectItem: Prisma.UserProfileSelect = {
     id: true,
@@ -73,6 +78,14 @@ export class ProfileService {
       where: { id: userId },
       data: { imageProfile: pathKey },
     });
+    await this.prisma.userMedia.create({
+      data: {
+        userProfileId: result.id,
+        bucket: this.bucketName,
+        path: pathKey,
+        type: 'image/webp',
+      },
+    });
     return result;
   }
 
@@ -87,6 +100,14 @@ export class ProfileService {
       select: this.profileSelectItem,
       where: { id: userId },
       data: { imageBanner: pathKey },
+    });
+    await this.prisma.userMedia.create({
+      data: {
+        userProfileId: result.id,
+        bucket: this.bucketName,
+        path: pathKey,
+        type: 'image/webp',
+      },
     });
     return result;
   }
