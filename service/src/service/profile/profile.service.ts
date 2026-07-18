@@ -48,18 +48,17 @@ export class ProfileService {
     });
 
     if (!profile) {
-      let username = displayName ? displayName.replace(/[^A-Za-z0-9_]/g, '').replace(/-/g, '_') : userId;
-      const usernameExist = await this.prisma.userProfile.findFirst({
-        select: this.profileSelectItem,
-        where: { userName: username },
-      });
-      if (usernameExist) username = userId;
+      // let username = displayName ? displayName.replace(/[^A-Za-z0-9_]/g, '').replace(/-/g, '_') : userId;
+      // const usernameExist = await this.prisma.userProfile.findFirst({
+      //   select: this.profileSelectItem,
+      //   where: { userName: username },
+      // });
+      // if (usernameExist) username = userId;
       profile = await this.prisma.userProfile.create({
         select: this.profileSelectItem,
         data: {
           id: userId,
           displayName: displayName || userId,
-          userName: username,
         },
       });
     }

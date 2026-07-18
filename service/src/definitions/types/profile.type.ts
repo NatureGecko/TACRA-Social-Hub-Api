@@ -5,7 +5,7 @@ import { IsNotEmpty, IsOptional, IsString, MaxLength } from 'class-validator';
 export type TProfileItem = {
   bio: string | null;
   id: string;
-  userName: string;
+  userName: string | null;
   displayName: string;
   email: string | null;
   social: JsonValue[];

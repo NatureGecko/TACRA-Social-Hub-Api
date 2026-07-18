@@ -15,7 +15,7 @@ datasource db {
 
 model UserProfile {
   id           String   @id @default(uuid()) @map("id")
-  userName     String   @unique @map("user_name")
+  userName     String?  @unique @map("user_name")
   displayName  String   @map("display_name")
   bio          String?  @map("bio")
   email        String?  @unique @map("email")
