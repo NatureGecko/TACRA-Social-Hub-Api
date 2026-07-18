@@ -58,7 +58,7 @@ export class ProfileService {
         select: this.profileSelectItem,
         data: {
           id: userId,
-          displayName: displayName || userId,
+          displayName: displayName || '',
         },
       });
     }
